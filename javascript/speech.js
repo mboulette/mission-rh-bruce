@@ -1,0 +1,6 @@
+
+window.speechSynthesis.getVoices();
+
+$(function() {
+
+});
