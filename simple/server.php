@@ -3,8 +3,8 @@
 
     <form>
         <textarea id="message"></textarea>
-        <button id="btn_speak" type="submit">Parler</button>
-        <button id="btn_write" type="submit">Écrire</button>
+        <button id="btn_speak" type="button">Parler</button>
+        <button id="btn_write" type="button">Écrire</button>
     </form>
 
     <video id="client_video" width="640" height="360" controls></video>
@@ -13,11 +13,12 @@
     </div>
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-    <script src="javascript/simplepeer.min.js"></script>
+    <script type="text/javascript" src="javascript/simplepeer.min.js"></script>
     <script>
 
     $(function() {
 
+        var audio = new Audio('audio/bell.mp3');
         var unique_id = (new Date).getTime();
         var p = new SimplePeer({
             initiator: true,
@@ -47,8 +48,8 @@
 
         p.on('connect', function () {
             console.log('CONNECT');
-            //p.send({'type':'speech', 'msg':'Bonjour, je m\'appel BRUCE. Je suis votre borne robotisé universel de communication empathique.'});
-            p.send(JSON.stringify({'type':'speech', 'msg':'Comment puis-je vous aider?'}));
+            //p.send(JSON.stringify({'action':'speech', 'msg':'Bonjour, je m\'appel BRUCE. Je suis votre borne robotisé universel de communication empathique.'}));
+            p.send(JSON.stringify({'action':'speech', 'msg':'Comment puis-je vous aider?'}));
         });
 
 
@@ -64,8 +65,13 @@
 
 
         p.on('data', function (data) {
-            //console.log('data: ' + data);
-            $('#output').append('<div>'+data+'</div>');
+            data = JSON.parse(data);
+            
+            $('#output').append('<div>'+data.msg+'</div>');
+            if (data.action == 'bell') {
+                audio.play();
+            }
+
         });
 
         function connect_to_client() {
@@ -92,14 +98,14 @@
             event.preventDefault();
             event.stopPropagation();
 
-            p.send( JSON.stringify({'type':'speech', 'msg': $('#message').val()}) );
+            p.send( JSON.stringify({'action':'speech', 'msg': $('#message').val()}) );
         });
 
         $(document).on('click', '#btn_write', function(event){
             event.preventDefault();
             event.stopPropagation();
 
-            p.send( JSON.stringify({'type':'text', 'msg': $('#message').val()}) );
+            p.send( JSON.stringify({'action':'text', 'msg': $('#message').val()}) );
         });
 
     });

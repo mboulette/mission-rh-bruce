@@ -1,20 +1,35 @@
 <html>
+<head>
+    <style>
+      .band {
+          background-color: #3897e0;
+          border-radius:3px 3px 0 0;
+      }
+    </style>
+
+</head>
 <body>
+
+    <div id="visualiser">
+    </div>
 
     <form>
         <textarea id="message"></textarea>
-        <button id="btn_submit" type="submit">submit</button>
+        <button id="btn_submit" type="button">submit</button>
+
+        <button id="btn_bell" type="button">bell</button>
     </form>
 
     <div id="output">
     </div>
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <script type="text/javascript" src="javascript/spectrum.js"></script>
     <script type="text/javascript" src="javascript/chunkify.js"></script>
-    <script src="javascript/simplepeer.min.js"></script>
+    <script type="text/javascript" src="javascript/simplepeer.min.js"></script>
     <script>
 
-
+    var sp = makeSpectrum('visualiser', 250, 100, 12, 0.01);
     var server_id = 0;
     var p;
 
@@ -54,8 +69,14 @@
             console.log(JSON.parse(data));
             data = JSON.parse(data);
 
-            if (data.type == 'speech') {
-                read(data.msg);
+            if (data.action == 'speech') {
+                
+                sp.fadeIn();
+                read(data.msg, function(){
+                    
+                    console.log('test');
+                    sp.fadeOut();
+                });
             } else {
                 $('#output').append('<div>'+data.msg+'</div>');
             }
@@ -97,12 +118,16 @@
             event.preventDefault();
             event.stopPropagation();
 
-            console.log( p );
-
-            p.send( $('#message').val() );
+            p.send( JSON.stringify({'action':'text', 'msg': $('#message').val()}) );
         });
 
-    
+       $(document).on('click', '#btn_bell', function(event){
+            event.preventDefault();
+            event.stopPropagation();
+
+            p.send( JSON.stringify({'action':'bell', 'msg': 'Ring...'}) );
+        });
+
     });
 
     </script>

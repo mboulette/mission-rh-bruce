@@ -89,6 +89,6 @@ var speechUtteranceChunker = function (utt, settings, callback) {
     }, 0);
 };
 
-var read = function (data) {
-    speechUtteranceChunker(createUtterance(data), {chunkLength: 120});
+var read = function (data, callback) {
+    speechUtteranceChunker(createUtterance(data), {chunkLength: 120}, callback);
 }
