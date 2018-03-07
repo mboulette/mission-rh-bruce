@@ -122,7 +122,6 @@ function makeSpectrum(id, width, height, bands, volume) {
             el.top = ((height - height * h)|0) + 'px';
             el.height =  ((height * h)|0) + 'px';
         }
-        //parent.innerHTML = html;
     }
 
     //init bands

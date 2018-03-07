@@ -84,13 +84,14 @@
 
             p.on('connect', function () {
                 console.log('CONNECT');
-                //p.send(JSON.stringify({'action':'speech', 'msg':'Bonjour, je m\'appel BRUCE. Je suis votre borne robotisé universel de communication empathique.'}));
-                p.send(JSON.stringify({'action':'speech', 'msg':'Comment puis-je vous aider?'}));
+                p.send(JSON.stringify({'action':'text', 'msg':'Bonjour, je m\'appel BRUCE. Je suis votre Borne Robotisé Universel de Communication Empathique.<br>Vous pouvez m\'écrire, ou me parler directement.<br>Comment puis-je vous aider?'}));
+                p.send(JSON.stringify({'action':'speech', 'msg':'Bonjour, Comment puis-je vous aider?'}));
             });
 
             p.on('close', function () {
                 console.log('DISCONNECT');
 
+                unique_id = (new Date).getTime();
                 peer = create_peer(config);
             });
 

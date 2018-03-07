@@ -14,11 +14,19 @@ var createUtterance = function(text) {
     utterance = new SpeechSynthesisUtterance();
    
     for(i = 0; i < $voices.length ; i++) {
+        
+        if ($voices[i].name == 'Nicolas') {
+            utterance.voice = $voices[i];
+            break;
+        }
+
         if ($voices[i].name == 'Thomas') {
             utterance.voice = $voices[i];
+            break;
         }
     }
-
+    
+    console.log( $voices );
     console.log( utterance.voice );
    
     utterance.rate = 1;
