@@ -35,7 +35,8 @@
         var audio_bell = new Audio('audio/bell-ringing-04.mp3');
 
         var unique_id = (new Date).getTime();
-        var p = new SimplePeer({
+
+        var config = {
             initiator: true,
             trickle: false,
             offerConstraints: { 
@@ -44,54 +45,9 @@
                     OfferToReceiveVideo: true 
                 }
             }
-        });
+        }
 
-        p.on('error', function (err) {
-            console.log('error', err);
-        });
-
-        p.on('signal', function (data) {
-            console.log('SIGNAL', data);
-
-            $.post( "rooter.php", {'id' : unique_id, 'server' : JSON.stringify(data)}, function( data ) {
-                console.log( data );
-            });
-
-            setTimeout(function(){ connect_to_client(); }, 3000);
-
-        });
-
-        p.on('connect', function () {
-            console.log('CONNECT');
-            //p.send(JSON.stringify({'action':'speech', 'msg':'Bonjour, je m\'appel BRUCE. Je suis votre borne robotisé universel de communication empathique.'}));
-            p.send(JSON.stringify({'action':'speech', 'msg':'Comment puis-je vous aider?'}));
-        });
-
-
-        p.on('stream', function (stream) {           
-            console.log(stream);
-
-            var video = document.querySelector('video');
-            video.src = window.URL.createObjectURL(stream);
-            video.onloadedmetadata = function(e) {
-              video.play();
-            };
-        });
-
-
-        p.on('data', function (data) {
-            data = JSON.parse(data);
-            
-            $('#output').append('<div>'+data.msg+'</div>');
-            if (data.action == 'bell') {
-                audio_bell.play();
-            } else {
-                audio_msg.play();
-            }
-
-        });
-
-        function connect_to_client() {
+        var connect_to_client = function() {
 
             $.get( "rooter.php", {'client' : true}, function( data ) {
                 
@@ -99,7 +55,7 @@
 
                 console.log( data );
                 if ( unique_id == data.id ) {
-                    p.signal(data.client);
+                    peer.signal(data.client);
                 } else {
                     setTimeout(function(){ connect_to_client(); }, 3000);
                 }
@@ -108,6 +64,66 @@
 
         }
 
+        var create_peer = function(config) {
+            var p = new SimplePeer(config);
+
+            p.on('error', function (err) {
+                console.log('error', err);
+            });
+
+            p.on('signal', function (data) {
+                console.log('SIGNAL', data);
+
+                $.post( "rooter.php", {'id' : unique_id, 'server' : JSON.stringify(data)}, function( data ) {
+                    console.log( data );
+                });
+
+                setTimeout(function(){ connect_to_client(); }, 3000);
+
+            });
+
+            p.on('connect', function () {
+                console.log('CONNECT');
+                //p.send(JSON.stringify({'action':'speech', 'msg':'Bonjour, je m\'appel BRUCE. Je suis votre borne robotisé universel de communication empathique.'}));
+                p.send(JSON.stringify({'action':'speech', 'msg':'Comment puis-je vous aider?'}));
+            });
+
+            p.on('close', function () {
+                console.log('DISCONNECT');
+
+                peer = create_peer(config);
+            });
+
+
+            p.on('stream', function (stream) {           
+                console.log(stream);
+
+                var video = document.querySelector('video');
+                video.src = window.URL.createObjectURL(stream);
+                video.onloadedmetadata = function(e) {
+                    video.play();
+                };
+            });
+
+
+            p.on('data', function (data) {
+                data = JSON.parse(data);
+                
+                $('#output').append('<div>'+data.msg+'</div>');
+                if (data.action == 'bell') {
+                    audio_bell.play();
+                } else {
+                    audio_msg.play();
+                }
+
+            });
+
+            return p;
+        }
+
+        var peer = create_peer(config);
+
+
 
 
 
@@ -115,14 +131,14 @@
             event.preventDefault();
             event.stopPropagation();
 
-            p.send( JSON.stringify({'action':'speech', 'msg': $('#message').val()}) );
+            peer.send( JSON.stringify({'action':'speech', 'msg': $('#message').val()}) );
         });
 
         $(document).on('click', '#btn_write', function(event){
             event.preventDefault();
             event.stopPropagation();
 
-            p.send( JSON.stringify({'action':'text', 'msg': $('#message').val()}) );
+            peer.send( JSON.stringify({'action':'text', 'msg': $('#message').val()}) );
         });
 
     });
