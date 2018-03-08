@@ -1,0 +1,12 @@
+{
+  "name": "Console B.R.U.C.E",
+  "description": "Obtenez l'aide que vous désirez en conversant avec BRUCE, l'intelligence artificiel du vaisseau Rh-PATAF",
+  "version": "0.1",
+  "manifest_version": 2,
+  "app": {
+    "background": {
+      "scripts": ["javascript/background.js"]
+    }
+  },
+  "icons": { "128": "img/chat-2-icon-128.png", "64": "img/chat-2-icon-64.png", "32": "img/chat-2-icon-32.png", "16": "img/chat-2-icon-16.png"}
+}
