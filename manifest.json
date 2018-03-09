@@ -8,5 +8,6 @@
       "scripts": ["javascript/background.js"]
     }
   },
-  "icons": { "128": "img/chat-2-icon-128.png", "64": "img/chat-2-icon-64.png", "32": "img/chat-2-icon-32.png", "16": "img/chat-2-icon-16.png"}
+  "icons": { "128": "img/chat-2-icon-128.png", "64": "img/chat-2-icon-64.png", "32": "img/chat-2-icon-32.png", "16": "img/chat-2-icon-16.png"},
+  "permissions": ["audio", "audioCapture", "browser", "tts", "videoCapture"]
 }

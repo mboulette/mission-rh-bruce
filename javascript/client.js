@@ -83,7 +83,7 @@
             console.log('SIGNAL', data);
             system_write('Recherche du serveur...');
 
-            $.post( "rooter.php", {'id' : server_id, 'client' : JSON.stringify(data)}, function( data ) {
+            $.post( "https://www.mission-rh.org/bruce/rooter.php", {'id' : server_id, 'client' : JSON.stringify(data)}, function( data ) {
                 console.log( data );
             });
 
@@ -122,7 +122,7 @@
         });
 
 
-        $.get( "rooter.php", {'server' : true}, function( data ) {
+        $.get( "https://www.mission-rh.org/bruce/rooter.php", {'server' : true}, function( data ) {
             data = JSON.parse(data);
 
             console.log( data );
