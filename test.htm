@@ -1,0 +1,166 @@
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <title>Console BRUCE - Rh-PATAF</title>
+
+    <style>
+
+        *:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .band {
+            background-color: #3897e0;
+            border-radius:3px 3px 0 0;
+        }
+        
+        .my-sidebar {
+            -ms-flex: 0 0 400px;
+            flex: 0 0 400px;
+            background-color: black; 
+        }
+
+        .output {
+            vertical-align: top;
+            background-color: #efefef;
+        }
+
+        .sidebar {
+            width:400px;
+            vertical-align: top;
+            background-color: #000;
+            text-align: center;
+        }
+
+        .chatbar {
+            height:100px;
+            vertical-align: middle;
+            background-color: #efefef;
+        }
+
+        .bruce_avatar {
+            background-image:url(img/ai_product_v2.gif);
+            width:400px;
+            height:300px;
+            padding-top:175px;
+        }
+
+        .info {
+            color: #bbb;
+            padding: 25px;
+        }
+
+        #visualiser {
+            margin-left: 25px;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        form {
+            margin: 0 10px 0 10px;
+        }
+
+        #output {
+            height: 100%;
+            width: 100%;
+            overflow-y: scroll;
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+
+        .row small {
+            font-size: 60%;
+        }
+
+        small {
+            font-size: 80%;
+        }
+
+        sub {
+            font-size: 50%;
+        }
+        
+    </style>
+
+</head>
+<body>
+
+    <div id="template" class="d-none">
+
+        <div class="row msg-system">
+            <div class="col-12"><div class="alert alert-success content"></div></div>
+        </div>
+
+        <div class="row msg-error">
+            <div class="col-12"><div class="alert alert-danger content"></div></div>
+        </div>
+
+        <div class="row msg-server">
+            <div class="col-2"><div class="alert alert-light text-center"><strong>BRUCE</strong></div></div>
+            <div class="col-1">&nbsp;</div>
+            <div class="col-9"><div class="alert alert-primary content"></div></div>
+        </div>
+
+        <div class="row msg-client">
+            <div class="col-2"><div class="alert alert-light text-center"><strong>VOUS</strong></div></div>
+            <div class="col-10"><div class="alert alert-secondary content"></div></div>
+        </div>
+    </div>
+
+
+    <table style="width:100%; height:100%;">
+        <tr>
+            <td class="output">
+                <div id="output" class="container-fluid">
+                </div>
+            </td>
+            <td rowspan='2' class="sidebar">
+                <div class="bruce_avatar">
+                    <div id="visualiser"></div>
+                </div>
+
+                <div>&nbsp;</div>
+
+                <h1>B.R.U.C.E <sub>v1.0</sub></h1>
+
+                <div class="info">
+                    Commencé en interpelant Bruce ou en cliquant sur la sonnette pour le sortir d'une veille prolongé.               
+                </div>
+                <small>Help - Aide - Ayuda - 帮助 - मदद - Hilfe</small>
+
+                <img src="img/home-header-logo.png" width="200" style="position: absolute; bottom: 25px; right: 100px;">
+            </td>
+        </tr>
+        <tr>
+            <td class="chatbar">
+                <form id="frm_send" class="">
+                    <div class="input-group">
+                        <textarea id="message" class="form-control"></textarea>
+                        <div class="input-group-append">
+                            <button id="btn_submit" class="btn btn-primary btn-lg" type="submit">Envoyer</button>
+                            <button id="btn_bell" class="btn btn-info btn-lg" type="button"><i class="fas fa-bell"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+
+    <script>
+        var audio_msg = new Audio('https://www.bing.com/tspeak?&format=audio/mp3&language=fr-fr&options=male&text=Bonjour%2C%20je%20m%27appel%20Bruce');
+
+         audio_msg.play();
+    </script>
+    
+</body>
+</html>

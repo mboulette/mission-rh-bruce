@@ -97,6 +97,17 @@ var speechUtteranceChunker = function (utt, settings, callback) {
     }, 0);
 };
 
+/*
 var read = function (data, callback) {
     speechUtteranceChunker(createUtterance(data), {chunkLength: 120}, callback);
+}
+
+*/
+
+var read = function (data, callback) {
+    var url = 'https://www.bing.com/tspeak?&format=audio/mp3&language=fr-fr&options=male&text=';
+    url += encodeURI(data);
+
+    var audio = new Audio('audio/bell.mp3');
+    audio.play();
 }
