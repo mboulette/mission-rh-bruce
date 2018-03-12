@@ -105,12 +105,19 @@ var read = function (data, callback) {
 */
 
 var read = function (data, callback) {
-    var url = 'https://www.bing.com/tspeak?&format=audio/mp3&language=fr-fr&options=male&text=';
-    url += encodeURI(data);
+    
+    if (voice_option != 'bruce') {
+        speechUtteranceChunker(createUtterance(data), {chunkLength: 120}, callback);
+        
+    } else {
+        var url = 'https://www.bing.com/tspeak?&format=audio/mp3&language=fr-fr&options=male&text=';
+        url += encodeURI(data);
 
-    var audio = new Audio(url);
-    audio.onended = function() {
-        sp.fadeOut();
+        var audio = new Audio(url);
+        audio.onended = function() {
+            sp.fadeOut();
+        }
+        audio.play();        
     }
-    audio.play();
+
 }

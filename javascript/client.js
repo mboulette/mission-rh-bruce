@@ -25,6 +25,7 @@
 
     moment.locale('fr-ca');
 
+    var voice_option = "bruce";
     var audio_msg = new Audio('audio/bell.mp3');
     var sp = makeSpectrum('visualiser', 350, 100, 20);
     var server_id = 0;
