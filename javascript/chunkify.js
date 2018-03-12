@@ -108,6 +108,9 @@ var read = function (data, callback) {
     var url = 'https://www.bing.com/tspeak?&format=audio/mp3&language=fr-fr&options=male&text=';
     url += encodeURI(data);
 
-    var audio = new Audio('audio/bell.mp3');
+    var audio = new Audio(url);
+    audio.onended = function() {
+        sp.fadeOut();
+    }
     audio.play();
 }
