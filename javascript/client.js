@@ -116,6 +116,15 @@
                 read(data.msg, function(){
                     sp.fadeOut();
                 });
+            } else if (data.action == 'wait') {
+                $('button, a').prop('disabled', true);
+                $('#waiting svg').removeClass('d-none');
+
+                setTimeout(function(){
+                    $('button, a').prop('disabled', false);
+                    $('#waiting svg').addClass('d-none'); 
+                }, 3000);
+
             } else {
                 server_write(data.msg);
             }
@@ -181,5 +190,14 @@
             system_write('<i class="fas fa-bell"></i> RING... RING...');
 
         });
+
+       $(document).on('click', '.voice-choice', function(event){
+            event.preventDefault();
+            //event.stopPropagation();
+
+            $('.voice-choice.active').removeClass('active');
+            $(this).addClass('active');
+            voice_option = $(this).data('voice');
+       });
 
     });

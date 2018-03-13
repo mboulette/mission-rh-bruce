@@ -50,6 +50,7 @@
             width:400px;
             height:300px;
             padding-top:175px;
+            position: relative;
         }
 
         .info {
@@ -94,7 +95,15 @@
         sub {
             font-size: 50%;
         }
-        
+
+        #waiting {
+            font-size: 36px;
+            color:#fff;
+            position: absolute;
+            top: 80px;
+            left: 120px;
+        }
+
     </style>
 
 </head>
@@ -157,6 +166,9 @@
             </td>
             <td class="sidebar">
                 <div class="bruce_avatar">
+                    <div id="waiting">
+                        <i class="fas fa-spinner fa-4x fa-spin d-none"></i>
+                    </div>
                     <div id="visualiser"></div>
                 </div>
 
