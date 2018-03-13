@@ -14,6 +14,7 @@
         <textarea id="message"></textarea>
         <button id="btn_speak" type="button">Parler</button>
         <button id="btn_write" type="button">Écrire</button>
+        <button id="btn_wait" type="button">Attendre</button>
     </form>
 
     <video id="client_video" width="640" height="360" controls></video>
@@ -141,6 +142,13 @@
 
             peer.send( JSON.stringify({'action':'text', 'msg': $('#message').val()}) );
         });
+
+        $(document).on('click', '#btn_wait', function(event){
+            event.preventDefault();
+            event.stopPropagation();
+
+            peer.send( JSON.stringify({'action':'wait', 'msg': $('#message').val()}) );
+        });        
 
     });
 
