@@ -108,9 +108,11 @@
             console.log(JSON.parse(data));
             data = JSON.parse(data);
 
-            if (data.msg == '') return false;
+
 
             if (data.action == 'speech') {
+
+                if (data.msg == '') return false;
                 
                 sp.fadeIn();
                 read(data.msg, function(){
@@ -123,9 +125,11 @@
                 setTimeout(function(){
                     $('button, a').prop('disabled', false);
                     $('#waiting svg').addClass('d-none'); 
-                }, 3000);
+                }, 10000);
 
             } else {
+                
+                if (data.msg == '') return false;
                 server_write(data.msg);
             }
 
