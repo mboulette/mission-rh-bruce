@@ -101,24 +101,24 @@
             console.log('DISCONNECT');
             error_write('Vous avez été déconecté!... Tentative de reconnexion');
 
-            setTimeout(function(){ peer(window.stream); }, 3000);
+            setTimeout(function(){ peer(window.stream); }, 5000);
         });
 
         p.on('data', function (data) {
             console.log(JSON.parse(data));
             data = JSON.parse(data);
 
+            if (data.msg == '') return false;
 
-
-            if (data.action == 'speech') {
-
-                if (data.msg == '') return false;
-                
+            if (data.action == 'speech') {               
                 sp.fadeIn();
                 read(data.msg, function(){
                     sp.fadeOut();
                 });
             } else if (data.action == 'wait') {
+                
+                system_write(data.msg);
+
                 $('button, a').prop('disabled', true);
                 $('#waiting svg').removeClass('d-none');
 
@@ -127,9 +127,7 @@
                     $('#waiting svg').addClass('d-none'); 
                 }, 10000);
 
-            } else {
-                
-                if (data.msg == '') return false;
+            } else {                
                 server_write(data.msg);
             }
 
@@ -168,7 +166,7 @@
 
 
         $(document).on('keypress', '#message', function (event) {
-            if (event.which == 13 && event.shiftKey) {
+            if (event.which == 13 && !event.shiftKey) {
                 event.preventDefault();
                 event.stopPropagation();                
 
@@ -190,7 +188,7 @@
             event.preventDefault();
             event.stopPropagation();
 
-            p.send( JSON.stringify({'action':'bell', 'msg': 'Ring...'}) );
+            p.send( JSON.stringify({'action':'bell', 'msg': '<i class="fas fa-bell"></i> RING... RING...'}) );
             system_write('<i class="fas fa-bell"></i> RING... RING...');
 
         });
