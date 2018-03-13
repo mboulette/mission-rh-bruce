@@ -25,6 +25,7 @@
 
     moment.locale('fr-ca');
 
+    var voice_option = "bruce";
     var audio_msg = new Audio('audio/bell.mp3');
     var sp = makeSpectrum('visualiser', 350, 100, 20);
     var server_id = 0;
@@ -107,15 +108,28 @@
             console.log(JSON.parse(data));
             data = JSON.parse(data);
 
-            if (data.msg == '') return false;
+
 
             if (data.action == 'speech') {
+
+                if (data.msg == '') return false;
                 
                 sp.fadeIn();
                 read(data.msg, function(){
                     sp.fadeOut();
                 });
+            } else if (data.action == 'wait') {
+                $('button, a').prop('disabled', true);
+                $('#waiting svg').removeClass('d-none');
+
+                setTimeout(function(){
+                    $('button, a').prop('disabled', false);
+                    $('#waiting svg').addClass('d-none'); 
+                }, 10000);
+
             } else {
+                
+                if (data.msg == '') return false;
                 server_write(data.msg);
             }
 
@@ -180,5 +194,14 @@
             system_write('<i class="fas fa-bell"></i> RING... RING...');
 
         });
+
+       $(document).on('click', '.voice-choice', function(event){
+            event.preventDefault();
+            //event.stopPropagation();
+
+            $('.voice-choice.active').removeClass('active');
+            $(this).addClass('active');
+            voice_option = $(this).data('voice');
+       });
 
     });
