@@ -113,7 +113,18 @@
                 <td class="sidebar" rowspan="2">
                     <video id="client_video" width="600" height="338" controls></video>
 
-                    <div>&nbsp;</div>
+                    <h3>Réponses rapides</h3>
+                    <div class="btn-group-vertical">
+                    <?php
+                    $json_file = file_get_contents(__DIR__."/preset.json");
+
+                    $json_array = json_decode($json_file, true);
+
+                    foreach ($json_array as $short => $long) {
+                        echo '<button type="button" class="quick-answer btn btn-secondary" data-text="'.$long.'">'.$short.'</button>';
+                    }
+                    ?>
+                    </div>
 
                 </td>
             </tr>
@@ -319,6 +330,8 @@
             event.preventDefault();
             event.stopPropagation();
 
+            if ( $('#message').val() == '' ) return false;
+
             peer.send( JSON.stringify({'action':'speech', 'msg': $('#message').val()}) );
 
             server_speek($('#message').val());
@@ -328,6 +341,8 @@
         $(document).on('click', '#btn_write', function(event){
             event.preventDefault();
             event.stopPropagation();
+
+            if ( $('#message').val() == '' ) return false;            
 
             peer.send( JSON.stringify({'action':'text', 'msg': $('#message').val()}) );
             
@@ -341,7 +356,16 @@
 
             peer.send( JSON.stringify({'action':'wait', 'msg': '<i class="fas fa-hourglass-half"></i> Veuillez patienter...'}) );
             system_write('<i class="fas fa-hourglass-half"></i> Veuillez patienter...');
-        });        
+        }); 
+
+        $(document).on('click', '.quick-answer', function(event){
+            event.preventDefault();
+            event.stopPropagation();
+
+            peer.send( JSON.stringify({'action':'speech', 'msg': $(this).data('text')}) );
+            server_speek($(this).data('text'));
+        }); 
+               
 
     });
 
