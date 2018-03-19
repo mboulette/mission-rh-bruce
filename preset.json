@@ -6,7 +6,8 @@
 	"Ne soyez pas grossier" : "Ne soyez pas grossier, nous travaillons tous dans un seul but.",
 	"Question niéseuses" : "Je n’ai pas de ressources à monopoliser pour répondre à vos futilités.",
 	"Autorisation requise" : "Désolé, vous n’avez pas les autorisations nécessaires pour accéder à cette information.",
-	"Je ne comprend pas" : "Je suis désolé, je n’ai pas compris le sens de votre question, merci d’utiliser un langage fort, claire et précis.",
+	"Je n'ai pas compris" : "Je suis désolé, je n’ai pas compris le sens de votre question, merci d’utiliser un langage fort, claire et précis.",
+	"Je ne comprend rien" : "Je suis désolé, je ne suis pas suffisamment cool pour reconnaitre votre dialecte, veillez construire des phrases complètes dans un français internationale.",
 	"Je ne sais pas" : "Les données recueillis ne me permettent pas de répondre à cette question de façon précise."
 
 }

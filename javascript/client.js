@@ -178,6 +178,8 @@
             event.preventDefault();
             event.stopPropagation();
 
+            if ( $('#btn_submit').prop('disabled') ) return false;
+
             p.send( JSON.stringify({'action':'text', 'msg': $('#message').val()}) );
 
             client_write($('#message').val());

@@ -60,6 +60,13 @@
             font-size: 50%;
         }
 
+        .btn-sm {
+            margin: 5px;
+        }
+
+        button span.del {
+        }
+
     </style>
 
 </head>
@@ -114,17 +121,19 @@
                     <video id="client_video" width="600" height="338" controls></video>
 
                     <h3>Réponses rapides</h3>
-                    <div class="btn-group-vertical">
+                    <div id="quick-list">
                     <?php
                     $json_file = file_get_contents(__DIR__."/preset.json");
 
                     $json_array = json_decode($json_file, true);
 
                     foreach ($json_array as $short => $long) {
-                        echo '<button type="button" class="quick-answer btn btn-secondary" data-text="'.$long.'">'.$short.'</button>';
+                        echo '<button type="button" class="quick-answer btn btn-secondary btn-sm" data-text="'.$long.'">'.$short.'</button>';
                     }
                     ?>
                     </div>
+
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-rapid-answer">Ajouter une réponse rapide</button>
 
                 </td>
             </tr>
@@ -143,6 +152,39 @@
                 </td>
             </tr>
         </table>
+
+        <div id="add-rapid-answer" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <form>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Ajouter une réponse rapide</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="form-group">
+                                <label for="#quick-name">Nom</label>
+                                <input type="text" class="form-control" id="quick-name" maxlength="30" placeholder="Ajouter un nom court pour la retrouver facilement">
+                                
+                            </div>
+
+                            <div class="form-group">
+                                <label for="#quick-body">Réponse</label>
+                                <textarea class="form-control" id="quick-body" placeholder="Le contenue de la réponse ici"></textarea>
+                                
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="quick-save">Enregistrer</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
 
     <script type="text/javascript" src="javascript/moment-with-locales.min.js"></script>
     <script type="text/javascript" src="javascript/jquery-3.3.1.min.js"></script>
@@ -301,8 +343,6 @@
         var server_speek = function(msg) {
             var template = $('#template .msg-speek').clone();
             chat(template, msg);
-
-            audio_msg.play();
         }
 
         var server_write = function(msg) {
@@ -315,6 +355,21 @@
         var client_write = function(msg) {
             var template = $('#template .msg-client').clone();
             chat(template, msg);
+        }
+
+        var add_quick_answer = function( new_answer ) {
+            $('#quick-list').append('<button type="button" id="'+new_answer.id+'" class="quick-answer btn btn-dark btn-sm">'+new_answer.name+'&nbsp; <span class="del" data-id="'+new_answer.id+'">&times;</span></button>');
+            $('#'+new_answer.id).data('text', new_answer.body);
+        }
+
+        var ls = [];
+        if (localStorage.getItem('quick-answer')) {
+            ls = JSON.parse(localStorage.getItem('quick-answer'));    
+        }
+        if (ls) {
+            for (var i = 0; i < ls.length; i++){
+                add_quick_answer( ls[i] );
+            }
         }
 
         $(document).on('keypress', '#message', function (event) {
@@ -364,7 +419,44 @@
 
             peer.send( JSON.stringify({'action':'speech', 'msg': $(this).data('text')}) );
             server_speek($(this).data('text'));
-        }); 
+        });
+
+        $(document).on('click', '#quick-save', function(event){
+            event.preventDefault();
+            event.stopPropagation();
+
+            new_answer = {'id' : new Date().getTime(), 'name' : $('#quick-name').val(), 'body' : $('#quick-body').val()};
+
+            ls.push(new_answer);
+            localStorage.setItem('quick-answer', JSON.stringify(ls));
+
+            add_quick_answer( new_answer );
+            $('#add-rapid-answer').modal('hide')
+
+            $('#quick-name').val('');
+            $('#quick-body').val('');
+        });
+
+        $(document).on('click', '.del', function(event){
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (ls) {
+
+                new_list = [];
+
+                for (var i = 0; i < ls.length; i++){
+                    if (ls[i].id != $(this).data('id') ) {
+                        new_list.push(ls[i]);
+                    }
+                }
+
+                ls = new_list;
+                localStorage.setItem('quick-answer', JSON.stringify(ls));
+            }
+
+            $(this).parent().remove();
+        });
                
 
     });
